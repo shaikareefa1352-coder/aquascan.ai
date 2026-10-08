@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AquaScan AI</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<aside class="sidebar">
+
+    <h2>🌊 AquaScan <span>AI</span></h2>
+
+    <p>Smarter Inspections.</p>
+
+    <nav>
+
+        <button onclick="showPage('dashboard')">
+            🏠 Dashboard
+        </button>
+
+        <button onclick="showPage('inspection')">
+            🤿 Live Inspection
+        </button>
+
+        <button onclick="showPage('detection')">
+            🧠 AI Detection
+        </button>
+
+        <button onclick="showPage('map')">
+            📍 Defect Map
+        </button>
+
+        <button onclick="showPage('reports')">
+            📄 Reports
+        </button>
+
+    </nav>
+
+    <div class="system">
+        ● System Online
+    </div>
+
+</aside>
+
+
+<main>
+
+<header>
+
+    <div>
+
+        <h1 id="pageTitle">
+            AquaScan AI Dashboard
+        </h1>
+
+        <p id="pageSubtitle">
+            Autonomous underwater infrastructure inspection
+        </p>
+
+    </div>
+
+    <button class="demo-btn" onclick="startDemo()">
+        ▶ Run Demo
+    </button>
+
+</header>
+
+
+<!-- ================= DASHBOARD ================= -->
+
+<section id="dashboard" class="page active">
+
+    <div class="stats">
+
+        <div class="stat">
+
+            <small>Robot Status</small>
+
+            <h2>In Operation</h2>
+
+            <span class="green">
+                ● Connected
+            </span>
+
+        </div>
+
+
+        <div class="stat">
+
+            <small>Battery</small>
+
+            <h2>78%</h2>
+
+            <div class="progress">
+
+                <div style="width:78%"></div>
+
+            </div>
+
+        </div>
+
+
+        <div class="stat">
+
+            <small>Depth</small>
+
+            <h2>12 m</h2>
+
+            <small>Target depth</small>
+
+        </div>
+
+
+        <div class="stat">
+
+            <small>Inspection</small>
+
+            <h2 id="progress">
+                68%
+            </h2>
+
+            <div class="progress">
+
+                <div
+                    id="progressBar"
+                    style="width:68%">
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="grid">
+
+
+        <!-- CAMERA -->
+
+        <div class="card">
+
+            <div class="card-title">
+
+                <h2>
+                    📷 Live Camera Feed
+                </h2>
+
+                <span class="live">
+                    ● LIVE
+                </span>
+
+            </div>
+
+
+            <div class="camera">
+
+                <img
+                    id="dashboardImage"
+                    class="inspection-image hidden"
+                    alt="Dam inspection">
+
+                <div
+                    id="defaultCamera"
+                    class="camera-placeholder">
+
+                    UNDERWATER
+                    <br>
+                    DAM CAMERA
+
+                </div>
+
+                <span class="camera-label">
+                    CAM-01 • 1080p
+                </span>
+
+            </div>
+
+
+            <button
+                class="primary"
+                onclick="showPage('inspection')">
+
+                🤿 Open Live Inspection
+
+            </button>
+
+        </div>
+
+
+        <!-- RESULT -->
+
+        <div class="card">
+
+            <h2>
+                🧠 AI Analysis Result
+            </h2>
+
+
+            <div
+                id="dashboardAlert"
+                class="alert">
+
+                WAITING FOR INSPECTION
+
+            </div>
+
+
+            <h2 id="dashboardDefect">
+                No Analysis
+            </h2>
+
+
+            <p>
+                Severity:
+                <strong id="dashboardSeverity">
+                    —
+                </strong>
+            </p>
+
+
+            <p>
+                AI Confidence:
+                <strong id="dashboardConfidence">
+                    —
+                </strong>
+            </p>
+
+
+            <p>
+                Location:
+                <strong id="dashboardLocation">
+                    —
+                </strong>
+            </p>
+
+
+            <button
+                class="primary full"
+                onclick="showPage('detection')">
+
+                View Detection Details
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- MAP + DEFECTS -->
+
+    <div class="grid">
+
+        <div class="card">
+
+            <h2>
+                📍 Inspection Map
+            </h2>
+
+
+            <div class="map">
+
+                🔴 B-03
+
+                <br><br>
+
+                🟠 B-07
+
+                <br><br>
+
+                🟢 B-10
+
+                <br><br>
+
+                ━━━━━ DAM STRUCTURE ━━━━━
+
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <h2>
+                Detected Defects
+            </h2>
+
+
+            <div id="dashboardDefectList">
+
+                <p>
+                    No inspection performed yet.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- ================= INSPECTION ================= -->
+
+<section id="inspection" class="page">
+
+    <div class="card">
+
+        <div class="inspection-header">
+
+            <div>
+
+                <h2>
+                    🤿 Live Underwater Inspection
+                </h2>
+
+                <p>
+                    Upload a dam / underwater infrastructure image.
+                </p>
+
+            </div>
+
+
+            <span class="live">
+                ● INSPECTION READY
+            </span>
+
+        </div>
+
+
+        <!-- UPLOAD -->
+
+        <label class="upload-box">
+
+            <input
+                type="file"
+                id="inspectionInput"
+                accept="image/*">
+
+            <span>
+                📷 Upload Dam Inspection Image
+            </span>
+
+            <small>
+                Dam / underwater infrastructure images only
+            </small>
+
+        </label>
+
+
+        <!-- IMAGE -->
+
+        <div class="camera inspection-camera">
+
+            <div
+                id="inspectionPlaceholder"
+                class="camera-placeholder">
+
+                📷
+
+                <br><br>
+
+                UPLOAD DAM IMAGE
+
+                <br>
+
+                TO START INSPECTION
+
+            </div>
+
+
+            <img
+                id="inspectionImage"
+                class="inspection-image hidden"
+                alt="Uploaded dam inspection image">
+
+
+            <div id="defectOverlay"></div>
+
+
+            <div
+                id="imageOverlay"
+                class="image-overlay hidden">
+
+                AI SCANNING...
+
+            </div>
+
+
+            <span class="camera-label">
+                CAM-01 • INSPECTION MODE
+            </span>
+
+        </div>
+
+
+        <!-- VALIDATION -->
+
+        <div
+            id="validationMessage"
+            class="validation-message hidden">
+
+        </div>
+
+
+        <!-- ROBOT DATA -->
+
+        <div class="robot-data">
+
+            <span>
+                Depth
+                <b>12 m</b>
+            </span>
+
+
+            <span>
+                Speed
+                <b>0.8 m/s</b>
+            </span>
+
+
+            <span>
+                Battery
+                <b>78%</b>
+            </span>
+
+
+            <span>
+                Distance
+                <b>142 m</b>
+            </span>
+
+        </div>
+
+
+        <button
+            class="primary"
+            id="startInspectionButton"
+            onclick="startInspection()"
+            disabled>
+
+            ▶ Start Inspection
+
+        </button>
+
+
+        <button
+            id="analyzeButton"
+            onclick="analyzeImage()"
+            disabled>
+
+            🧠 Analyze Image
+
+        </button>
+
+
+        <button onclick="pauseInspection()">
+            Ⅱ Pause
+        </button>
+
+
+        <button onclick="stopInspection()">
+            ■ Stop
+        </button>
+
+
+        <hr>
+
+
+        <div
+            id="analysis"
+            class="analysis-box">
+
+            Waiting for a valid dam image...
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- ================= DETECTION ================= -->
+
+<section id="detection" class="page">
+
+    <div class="grid">
+
+
+        <div class="card">
+
+            <h2>
+                🧠 AI Defect Detection
+            </h2>
+
+
+            <div
+                id="detectionImageBox"
+                class="detection-image-box">
+
+                <div class="map-empty">
+
+                    No inspection analyzed yet.
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="card">
+
+            <h2>
+                ⚠ Detection Result
+            </h2>
+
+
+            <div class="confidence">
+
+                <span>
+                    AI Confidence
+                </span>
+
+                <strong id="confidenceValue">
+                    —
+                </strong>
+
+            </div>
+
+
+            <hr>
+
+
+            <p>
+                Defect Type:
+
+                <b id="detectionType">
+                    —
+                </b>
+            </p>
+
+
+            <p>
+                Severity:
+
+                <b
+                    class="red"
+                    id="detectionSeverity">
+
+                    —
+
+                </b>
+            </p>
+
+
+            <p>
+                Location:
+
+                <b id="detectionLocation">
+                    —
+                </b>
+            </p>
+
+
+            <p>
+                Estimated Length:
+
+                <b id="detectionLength">
+                    —
+                </b>
+
+            </p>
+
+
+            <p>
+                Recommended Action:
+
+                <b id="detectionAction">
+                    —
+                </b>
+
+            </p>
+
+
+            <button
+                class="primary"
+                onclick="saveDetection()">
+
+                Save Detection
+
+            </button>
+
+
+            <!-- IMPORTANT -->
+
+            <button
+                onclick="showMapDirectly()">
+
+                📍 View on Map
+
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- ================= MAP ================= -->
+
+<section id="map" class="page">
+
+    <div class="card">
+
+        <h2>
+            📍 Defect Location Map
+        </h2>
+
+
+        <p class="map-description">
+
+            Previously analyzed inspection image.
+            No re-upload required.
+
+        </p>
+
+
+        <div
+            id="defectMapContainer"
+            class="defect-map-container">
+
+            <div class="map-empty">
+
+                No analyzed inspection available.
+
+            </div>
+
+        </div>
+
+
+        <div
+            id="mapLegend"
+            class="map-legend hidden">
+
+            <span>
+                🔴 Crack
+            </span>
+
+            <span>
+                🟠 Corrosion
+            </span>
+
+            <span>
+                🟣 Leakage
+            </span>
+
+            <span>
+                🟢 No Defect
+            </span>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- ================= REPORT ================= -->
+
+<section id="reports" class="page">
+
+    <div class="card">
+
+        <div class="report-header">
+
+            <div>
+
+                <h2>
+                    📄 Inspection Report
+                </h2>
+
+                <p>
+                    Inspection ID:
+                    AS-2026-001
+                </p>
+
+                <p>
+                    Structure:
+                    Dam Section A
+                </p>
+
+            </div>
+
+
+            <button
+                class="primary"
+                onclick="downloadReport()">
+
+                ↓ Download Report
+
+            </button>
+
+        </div>
+
+
+        <div class="summary">
+
+            <div>
+
+                <b id="reportDefectCount">
+                    0
+                </b>
+
+                <small>
+                    Detected Defects
+                </small>
+
+            </div>
+
+
+            <div>
+
+                <b>
+                    12
+                </b>
+
+                <small>
+                    Areas Inspected
+                </small>
+
+            </div>
+
+
+            <div>
+
+                <b>
+                    78%
+                </b>
+
+                <small>
+                    Battery
+                </small>
+
+            </div>
+
+
+            <div>
+
+                <b>
+                    12 m
+                </b>
+
+                <small>
+                    Depth
+                </small>
+
+            </div>
+
+        </div>
+
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Defect
+                    </th>
+
+                    <th>
+                        Location
+                    </th>
+
+                    <th>
+                        Severity
+                    </th>
+
+                    <th>
+                        Confidence
+                    </th>
+
+                    <th>
+                        Status
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody id="reportBody">
+
+                <tr>
+
+                    <td colspan="5">
+                        No inspection analyzed yet.
+                    </td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</section>
+
+
+
+<footer>
+
+    AquaScan AI •
+    Navigate → Capture → Analyze → Map → Report
+
+</footer>
+
+</main>
+
+
+<div id="toast"></div>
+
+
+<script src="script.js"></script>
+
+</body>
+</html>
